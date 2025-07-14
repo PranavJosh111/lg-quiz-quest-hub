@@ -17,8 +17,11 @@ import {
   Trophy,
   TrendingUp,
   Calendar,
-  Clock
+  Clock,
+  Building2,
+  AlertTriangle
 } from "lucide-react";
+import DepartmentReports from "./DepartmentReports";
 
 interface AdminDashboardProps {
   user: any;
@@ -74,10 +77,14 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Overview
+            </TabsTrigger>
+            <TabsTrigger value="departments" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              Departments
             </TabsTrigger>
             <TabsTrigger value="employees" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
@@ -189,6 +196,10 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="departments" className="space-y-6">
+            <DepartmentReports />
           </TabsContent>
 
           <TabsContent value="employees" className="space-y-6">

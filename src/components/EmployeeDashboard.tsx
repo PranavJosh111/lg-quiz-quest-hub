@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Trophy, 
   Clock, 
@@ -14,8 +15,13 @@ import {
   Calendar,
   Lock,
   CheckCircle,
-  Zap
+  Zap,
+  Users,
+  User,
+  LogOut
 } from "lucide-react";
+import AvatarCustomizer from "./AvatarCustomizer";
+import Leaderboard from "./Leaderboard";
 
 interface EmployeeDashboardProps {
   user: any;
@@ -81,69 +87,90 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          
-          {/* Stats Overview */}
-          <div className="lg:col-span-3 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="bg-gradient-to-br from-primary to-primary-glow text-primary-foreground">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm opacity-90">Total Points</p>
-                      <p className="text-2xl font-bold">{userStats.totalPoints}</p>
-                    </div>
-                    <Trophy className="w-8 h-8 opacity-80" />
-                  </div>
-                </CardContent>
-              </Card>
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <Card className="bg-gradient-to-br from-primary to-primary-glow text-primary-foreground">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm opacity-90">Total Points</p>
+                  <p className="text-2xl font-bold">{userStats.totalPoints}</p>
+                </div>
+                <Trophy className="w-8 h-8 opacity-80" />
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Weekly Rank</p>
-                      <p className="text-2xl font-bold text-foreground">#{userStats.weeklyRank}</p>
-                    </div>
-                    <Award className="w-8 h-8 text-warning" />
-                  </div>
-                </CardContent>
-              </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Weekly Rank</p>
+                  <p className="text-2xl font-bold text-foreground">#{userStats.weeklyRank}</p>
+                </div>
+                <Award className="w-8 h-8 text-warning" />
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Completed</p>
-                      <p className="text-2xl font-bold text-foreground">
-                        {userStats.completedQuizzes}/{userStats.totalQuizzes}
-                      </p>
-                    </div>
-                    <CheckCircle className="w-8 h-8 text-success" />
-                  </div>
-                </CardContent>
-              </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Completed</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {userStats.completedQuizzes}/{userStats.totalQuizzes}
+                  </p>
+                </div>
+                <CheckCircle className="w-8 h-8 text-success" />
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Streak</p>
-                      <p className="text-2xl font-bold text-foreground">{userStats.streak} days</p>
-                    </div>
-                    <Zap className="w-8 h-8 text-primary" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Streak</p>
+                  <p className="text-2xl font-bold text-foreground">{userStats.streak} days</p>
+                </div>
+                <Zap className="w-8 h-8 text-primary" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-            {/* Weekly Quizzes */}
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="quizzes" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="quizzes" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              Quizzes
+            </TabsTrigger>
+            <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Leaderboard
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              Profile
+            </TabsTrigger>
+            <TabsTrigger value="badges" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Badges
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="quizzes" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Brain className="w-5 h-5 text-primary" />
-                  Weekly Quizzes
+                  Weekly Quizzes - Sequential Unlock System
                 </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Complete one quiz to unlock the next. New quizzes become available 2 days after completion.
+                </p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -173,8 +200,8 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
                             <h4 className="font-medium">Week {quiz.week}: {quiz.title}</h4>
                             <p className="text-sm text-muted-foreground">
                               {quiz.status === 'completed' && `Score: ${quiz.score}%`}
-                              {quiz.status === 'available' && 'Ready to attempt'}
-                              {quiz.status === 'locked' && `Unlocks in ${userStats.nextQuizUnlockIn}`}
+                              {quiz.status === 'available' && 'Ready to attempt - Only ONE quiz can be active at a time'}
+                              {quiz.status === 'locked' && `Unlocks in ${userStats.nextQuizUnlockIn} after previous completion`}
                             </p>
                           </div>
                         </div>
@@ -194,94 +221,89 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </TabsContent>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Avatar Selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Your Avatar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-center">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage src={avatarOptions[selectedAvatar - 1]} />
-                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {avatarOptions.map((avatar, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedAvatar(index + 1)}
-                        className={`p-2 rounded-lg border-2 transition-all ${
-                          selectedAvatar === index + 1
-                            ? 'border-primary bg-primary/10'
-                            : 'border-muted hover:border-border'
-                        }`}
-                      >
-                        <Avatar className="w-full h-12">
-                          <AvatarImage src={avatar} />
-                        </Avatar>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="leaderboard" className="mt-6">
+            <Leaderboard currentUser={user} />
+          </TabsContent>
 
-            {/* Badges */}
+          <TabsContent value="profile" className="mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <AvatarCustomizer 
+                selectedAvatar={selectedAvatar} 
+                onAvatarChange={setSelectedAvatar}
+                userName={user.name}
+              />
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Overall Progress</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Quiz Completion</span>
+                        <span>{Math.round((userStats.completedQuizzes / userStats.totalQuizzes) * 100)}%</span>
+                      </div>
+                      <Progress value={(userStats.completedQuizzes / userStats.totalQuizzes) * 100} />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 pt-4">
+                      <div className="text-center p-3 bg-muted/30 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{userStats.streak}</div>
+                        <div className="text-sm text-muted-foreground">Day Streak</div>
+                      </div>
+                      <div className="text-center p-3 bg-muted/30 rounded-lg">
+                        <div className="text-2xl font-bold text-success">{Math.round((userStats.completedQuizzes / userStats.totalQuizzes) * 100)}%</div>
+                        <div className="text-sm text-muted-foreground">Attempt Ratio</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="badges" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Achievement Badges</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {badges.map((badge) => (
                     <div
                       key={badge.id}
-                      className={`p-3 rounded-lg border transition-all ${
+                      className={`p-4 rounded-lg border transition-all ${
                         badge.earned
                           ? 'border-success bg-success/5 hover:bg-success/10'
                           : 'border-muted bg-muted/30 opacity-60'
                       }`}
                     >
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      <div className="flex flex-col items-center text-center space-y-3">
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
                           badge.earned ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
                         }`}>
-                          <badge.icon className="w-4 h-4" />
+                          <badge.icon className="w-6 h-6" />
                         </div>
                         <div>
-                          <h4 className="font-medium text-sm">{badge.name}</h4>
-                          <p className="text-xs text-muted-foreground">{badge.description}</p>
+                          <h4 className="font-medium">{badge.name}</h4>
+                          <p className="text-sm text-muted-foreground">{badge.description}</p>
                         </div>
+                        {badge.earned && (
+                          <Badge variant="secondary" className="bg-success/10 text-success">
+                            Earned
+                          </Badge>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-
-            {/* Progress */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Overall Progress</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span>Quiz Completion</span>
-                    <span>{Math.round((userStats.completedQuizzes / userStats.totalQuizzes) * 100)}%</span>
-                  </div>
-                  <Progress value={(userStats.completedQuizzes / userStats.totalQuizzes) * 100} />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
