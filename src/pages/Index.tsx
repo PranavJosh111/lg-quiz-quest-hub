@@ -1,14 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import LoginPage from "@/components/LoginPage";
+import EmployeeDashboard from "@/components/EmployeeDashboard";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [user, setUser] = useState<any>(null);
+  const [userType, setUserType] = useState<'employee' | 'admin' | null>(null);
+
+  const handleLogin = (type: 'employee' | 'admin', userData: any) => {
+    setUserType(type);
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setUserType(null);
+  };
+
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  if (userType === 'employee') {
+    return <EmployeeDashboard user={user} onLogout={handleLogout} />;
+  }
+
+  if (userType === 'admin') {
+    return <AdminDashboard user={user} onLogout={handleLogout} />;
+  }
+
+  return null;
 };
 
 export default Index;
