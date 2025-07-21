@@ -1,35 +1,17 @@
-import { useState } from "react";
-import LoginPage from "@/components/LoginPage";
 import EmployeeDashboard from "@/components/EmployeeDashboard";
-import AdminDashboard from "@/components/AdminDashboard";
 
 const Index = () => {
-  const [user, setUser] = useState<any>(null);
-  const [userType, setUserType] = useState<'employee' | 'admin' | null>(null);
-
-  const handleLogin = (type: 'employee' | 'admin', userData: any) => {
-    setUserType(type);
-    setUser(userData);
+  const mockUser = {
+    name: "John Doe",
+    email: "john.doe@lg.com",
+    department: "Engineering",
+    points: 850,
+    badges: 5,
+    avatar: "avatar-1",
+    avatarBg: "bg-1"
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    setUserType(null);
-  };
-
-  if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
-
-  if (userType === 'employee') {
-    return <EmployeeDashboard user={user} onLogout={handleLogout} />;
-  }
-
-  if (userType === 'admin') {
-    return <AdminDashboard user={user} onLogout={handleLogout} />;
-  }
-
-  return null;
+  return <EmployeeDashboard user={mockUser} onLogout={() => {}} />;
 };
 
 export default Index;
