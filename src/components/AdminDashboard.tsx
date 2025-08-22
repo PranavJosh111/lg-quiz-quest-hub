@@ -23,8 +23,10 @@ import {
 } from "lucide-react";
 import DepartmentReports from "./DepartmentReports";
 
+import { AuthUser } from "@/hooks/useAuth";
+
 interface AdminDashboardProps {
-  user: any;
+  user: AuthUser;
   onLogout: () => void;
 }
 
@@ -66,7 +68,7 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
             <h1 className="text-2xl font-bold text-primary">LG Quiz Platform - Admin</h1>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary" className="bg-primary/10 text-primary">Administrator</Badge>
-              <span className="text-sm font-medium">{user.name}</span>
+              <span className="text-sm font-medium">{user.displayName}</span>
               <Button variant="outline" onClick={onLogout}>
                 Logout
               </Button>

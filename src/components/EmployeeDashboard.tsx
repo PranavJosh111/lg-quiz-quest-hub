@@ -23,8 +23,10 @@ import {
 import AvatarCustomizer from "./AvatarCustomizer";
 import Leaderboard from "./Leaderboard";
 
+import { AuthUser } from "@/hooks/useAuth";
+
 interface EmployeeDashboardProps {
-  user: any;
+  user: AuthUser;
   onLogout: () => void;
 }
 
@@ -75,9 +77,9 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
             <div className="flex items-center space-x-4">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={avatarOptions[selectedAvatar - 1]} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{user.displayName.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium">{user.name}</span>
+              <span className="text-sm font-medium">{user.displayName}</span>
               <Button variant="outline" onClick={onLogout}>
                 Logout
               </Button>
@@ -232,7 +234,7 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
               <AvatarCustomizer 
                 selectedAvatar={selectedAvatar} 
                 onAvatarChange={setSelectedAvatar}
-                userName={user.name}
+                userName={user.displayName}
               />
               
               <Card>

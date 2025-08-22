@@ -4,26 +4,33 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Building2, Shield, User } from "lucide-react";
+import { Building2, Shield, User, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LoginPageProps {
-  onLogin: (userType: 'employee' | 'admin', userData: any) => void;
+  onAuthSuccess: () => void;
 }
 
-const LoginPage = ({ onLogin }: LoginPageProps) => {
-  const [employeeForm, setEmployeeForm] = useState({ email: '', password: '' });
-  const [adminForm, setAdminForm] = useState({ email: '', password: '' });
+const LoginPage = ({ onAuthSuccess }: LoginPageProps) => {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [isSignUp, setIsSignUp] = useState(false);
+  const { signIn, signUp, loading, error } = useAuth();
 
-  const handleEmployeeLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual authentication with Supabase
-    onLogin('employee', { email: employeeForm.email, name: 'Employee User' });
-  };
-
-  const handleAdminLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement actual authentication with Supabase
-    onLogin('admin', { email: adminForm.email, name: 'Admin User' });
+    
+    try {
+      if (isSignUp) {
+        await signUp(form.email, form.password);
+        alert('Check your email for the confirmation link!');
+      } else {
+        await signIn(form.email, form.password);
+        onAuthSuccess();
+      }
+    } catch (err) {
+      // Error is handled by useAuth hook
+    }
   };
 
   return (
@@ -43,76 +50,58 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
         </CardHeader>
 
         <CardContent>
-          <Tabs defaultValue="employee" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="employee" className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                Employee
-              </TabsTrigger>
-              <TabsTrigger value="admin" className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Administrator
-              </TabsTrigger>
-            </TabsList>
+          {error && (
+            <Alert className="mb-6 border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-            <TabsContent value="employee">
-              <form onSubmit={handleEmployeeLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="emp-email">Employee Email</Label>
-                  <Input
-                    id="emp-email"
-                    type="email"
-                    placeholder="your.email@lge.com"
-                    value={employeeForm.email}
-                    onChange={(e) => setEmployeeForm({...employeeForm, email: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="emp-password">Password</Label>
-                  <Input
-                    id="emp-password"
-                    type="password"
-                    value={employeeForm.password}
-                    onChange={(e) => setEmployeeForm({...employeeForm, password: e.target.value})}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transition-all duration-300">
-                  Sign In as Employee
-                </Button>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="admin">
-              <form onSubmit={handleAdminLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="admin-email">Administrator Email</Label>
-                  <Input
-                    id="admin-email"
-                    type="email"
-                    placeholder="admin@lge.com"
-                    value={adminForm.email}
-                    onChange={(e) => setAdminForm({...adminForm, email: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="admin-password">Password</Label>
-                  <Input
-                    id="admin-password"
-                    type="password"
-                    value={adminForm.password}
-                    onChange={(e) => setAdminForm({...adminForm, password: e.target.value})}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full bg-gradient-to-r from-foreground to-muted-foreground text-background hover:shadow-lg transition-all duration-300">
-                  Sign In as Administrator
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your.email@lge.com"
+                value={form.email}
+                onChange={(e) => setForm({...form, email: e.target.value})}
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={form.password}
+                onChange={(e) => setForm({...form, password: e.target.value})}
+                required
+                disabled={loading}
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transition-all duration-300"
+              disabled={loading}
+            >
+              {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+            </Button>
+            
+            <div className="text-center">
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => setIsSignUp(!isSignUp)}
+                disabled={loading}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
+              </Button>
+            </div>
+          </form>
         </CardContent>
       </Card>
     </div>

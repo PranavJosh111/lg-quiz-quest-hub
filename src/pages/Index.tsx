@@ -1,44 +1,42 @@
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import LoginPage from "@/components/LoginPage";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import EmployeeDashboard from "@/components/EmployeeDashboard";
 import AdminDashboard from "@/components/AdminDashboard";
 
 const Index = () => {
-  const [user, setUser] = useState<any>(null);
-  const [userType, setUserType] = useState<'employee' | 'admin' | null>(null);
+  const { authUser, loading } = useAuth();
 
-  const handleLogin = (type: 'employee' | 'admin', userData: any) => {
-    setUserType(type);
-    setUser(userData);
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    setUserType(null);
-  };
-
-  if (!user || !userType) {
-    return <LoginPage onLogin={handleLogin} />;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
-  if (userType === 'employee') {
-    const mockUser = {
-      name: user.name || "John Doe",
-      email: user.email || "john.doe@lg.com",
-      department: "Engineering",
-      points: 850,
-      badges: 5,
-      avatar: "avatar-1",
-      avatarBg: "bg-1"
-    };
-    return <EmployeeDashboard user={mockUser} onLogout={handleLogout} />;
+  if (!authUser) {
+    return <LoginPage onAuthSuccess={() => window.location.reload()} />;
   }
 
-  if (userType === 'admin') {
-    return <AdminDashboard user={user} onLogout={handleLogout} />;
+  // Role-based routing
+  if (authUser.profile.role === 'admin') {
+    return (
+      <ProtectedRoute requiredRole="admin">
+        <AdminDashboard user={authUser} onLogout={() => window.location.reload()} />
+      </ProtectedRoute>
+    );
   }
 
-  return null;
+  // Default to user dashboard
+  return (
+    <ProtectedRoute requiredRole="user">
+      <EmployeeDashboard user={authUser} onLogout={() => window.location.reload()} />
+    </ProtectedRoute>
+  );
 };
 
 export default Index;
