@@ -32,7 +32,7 @@ const Leaderboard = ({ currentUser }: LeaderboardProps) => {
     },
     { 
       id: 3, 
-      name: currentUser.name, 
+      name: currentUser?.displayName || currentUser?.email || "You", 
       department: "Sales", 
       points: 1250, 
       quizzesCompleted: 8, 
@@ -145,7 +145,7 @@ const Leaderboard = ({ currentUser }: LeaderboardProps) => {
                   
                   <Avatar className="w-10 h-10">
                     <AvatarImage src={user.avatar} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{user.name?.charAt(0) || '?'}</AvatarFallback>
                   </Avatar>
                   
                   <div>
