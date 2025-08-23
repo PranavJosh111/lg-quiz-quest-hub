@@ -33,31 +33,18 @@ interface AdminDashboardProps {
 const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Mock data - will be replaced with real data from Supabase
+  // Real admin stats - will be populated from database
   const adminStats = {
-    totalEmployees: 127,
-    activeQuizzes: 6,
-    avgCompletionRate: 78,
-    avgScore: 85,
-    thisWeekParticipants: 98
+    totalEmployees: 0,
+    activeQuizzes: 0,
+    avgCompletionRate: 0,
+    avgScore: 0,
+    thisWeekParticipants: 0
   };
 
-  const employeeData = [
-    { id: 1, name: "John Smith", email: "john.smith@lge.com", points: 1250, rank: 1, lastActive: "2024-01-14" },
-    { id: 2, name: "Sarah Johnson", email: "sarah.j@lge.com", points: 1180, rank: 2, lastActive: "2024-01-14" },
-    { id: 3, name: "Mike Chen", email: "m.chen@lge.com", points: 1120, rank: 3, lastActive: "2024-01-13" },
-    { id: 4, name: "Lisa Park", email: "lisa.park@lge.com", points: 1050, rank: 4, lastActive: "2024-01-14" },
-    { id: 5, name: "David Wilson", email: "d.wilson@lge.com", points: 980, rank: 5, lastActive: "2024-01-12" }
-  ];
+  const employeeData: any[] = [];
 
-  const quizData = [
-    { id: 1, week: 1, title: "LG History & Values", participants: 120, avgScore: 88, status: "Completed" },
-    { id: 2, week: 2, title: "Product Knowledge Basics", participants: 115, avgScore: 82, status: "Completed" },
-    { id: 3, week: 3, title: "Customer Service Excellence", participants: 108, avgScore: 91, status: "Completed" },
-    { id: 4, week: 4, title: "Technical Fundamentals", participants: 85, avgScore: 79, status: "Active" },
-    { id: 5, week: 5, title: "Innovation & Technology", participants: 0, avgScore: 0, status: "Scheduled" },
-    { id: 6, week: 6, title: "Leadership Skills", participants: 0, avgScore: 0, status: "Draft" }
-  ];
+  const quizData: any[] = [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
@@ -173,28 +160,35 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {employeeData.slice(0, 5).map((employee, index) => (
-                    <div key={employee.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                          index === 0 ? 'bg-warning text-warning-foreground' :
-                          index === 1 ? 'bg-muted-foreground text-background' :
-                          index === 2 ? 'bg-primary/70 text-primary-foreground' :
-                          'bg-muted text-muted-foreground'
-                        }`}>
-                          #{employee.rank}
-                        </div>
-                        <div>
-                          <h4 className="font-medium">{employee.name}</h4>
-                          <p className="text-sm text-muted-foreground">{employee.email}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-primary">{employee.points} pts</p>
-                        <p className="text-xs text-muted-foreground">Last active: {employee.lastActive}</p>
-                      </div>
+                  {employeeData.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground">
+                      <p>No employee data available yet.</p>
+                      <p className="text-sm mt-2">Data will appear as employees complete quizzes.</p>
                     </div>
-                  ))}
+                  ) : (
+                    employeeData.slice(0, 5).map((employee, index) => (
+                      <div key={employee.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                            index === 0 ? 'bg-warning text-warning-foreground' :
+                            index === 1 ? 'bg-muted-foreground text-background' :
+                            index === 2 ? 'bg-primary/70 text-primary-foreground' :
+                            'bg-muted text-muted-foreground'
+                          }`}>
+                            #{employee.rank}
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{employee.name}</h4>
+                            <p className="text-sm text-muted-foreground">{employee.email}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-primary">{employee.points} pts</p>
+                          <p className="text-xs text-muted-foreground">Last active: {employee.lastActive}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -211,23 +205,30 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {employeeData.map((employee) => (
-                    <div key={employee.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <h4 className="font-medium">{employee.name}</h4>
-                        <p className="text-sm text-muted-foreground">{employee.email}</p>
-                        <p className="text-sm text-primary font-medium">{employee.points} points • Rank #{employee.rank}</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      </div>
+                  {employeeData.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground">
+                      <p>No employees registered yet.</p>
+                      <p className="text-sm mt-2">Employee data will appear as users sign up and complete quizzes.</p>
                     </div>
-                  ))}
+                  ) : (
+                    employeeData.map((employee) => (
+                      <div key={employee.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{employee.name}</h4>
+                          <p className="text-sm text-muted-foreground">{employee.email}</p>
+                          <p className="text-sm text-primary font-medium">{employee.points} points • Rank #{employee.rank}</p>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -245,39 +246,46 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
             <Card>
               <CardContent className="p-0">
                 <div className="space-y-0">
-                  {quizData.map((quiz) => (
-                    <div key={quiz.id} className="flex items-center justify-between p-4 border-b last:border-b-0">
-                      <div>
-                        <h4 className="font-medium">Week {quiz.week}: {quiz.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {quiz.participants > 0 
-                            ? `${quiz.participants} participants • ${quiz.avgScore}% avg score`
-                            : `No participants yet`
-                          }
-                        </p>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Badge variant={
-                          quiz.status === 'Active' ? 'default' :
-                          quiz.status === 'Completed' ? 'secondary' :
-                          quiz.status === 'Scheduled' ? 'outline' : 'secondary'
-                        }>
-                          {quiz.status}
-                        </Badge>
-                        <div className="flex space-x-1">
-                          <Button variant="outline" size="sm">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm" className="text-destructive hover:text-destructive">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                  {quizData.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground">
+                      <p>No quizzes created yet.</p>
+                      <p className="text-sm mt-2">Create your first quiz using the button above.</p>
+                    </div>
+                  ) : (
+                    quizData.map((quiz) => (
+                      <div key={quiz.id} className="flex items-center justify-between p-4 border-b last:border-b-0">
+                        <div>
+                          <h4 className="font-medium">Week {quiz.week}: {quiz.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {quiz.participants > 0 
+                              ? `${quiz.participants} participants • ${quiz.avgScore}% avg score`
+                              : `No participants yet`
+                            }
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Badge variant={
+                            quiz.status === 'Active' ? 'default' :
+                            quiz.status === 'Completed' ? 'secondary' :
+                            quiz.status === 'Scheduled' ? 'outline' : 'secondary'
+                          }>
+                            {quiz.status}
+                          </Badge>
+                          <div className="flex space-x-1">
+                            <Button variant="outline" size="sm">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-destructive hover:text-destructive">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>

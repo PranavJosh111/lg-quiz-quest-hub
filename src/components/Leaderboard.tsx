@@ -8,87 +8,17 @@ interface LeaderboardProps {
 }
 
 const Leaderboard = ({ currentUser }: LeaderboardProps) => {
-  // Mock leaderboard data - in real app, this would come from database
+  // Empty leaderboard - will be populated with real data later
   const leaderboardData = [
     { 
       id: 1, 
-      name: "Sarah Kim", 
-      department: "Engineering", 
-      points: 1580, 
-      quizzesCompleted: 12, 
-      accuracy: 94, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
-      isCurrentUser: false 
-    },
-    { 
-      id: 2, 
-      name: "Michael Chen", 
-      department: "Marketing", 
-      points: 1520, 
-      quizzesCompleted: 11, 
-      accuracy: 89, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=michael",
-      isCurrentUser: false 
-    },
-    { 
-      id: 3, 
       name: currentUser?.displayName || currentUser?.email || "You", 
-      department: "Sales", 
-      points: 1250, 
-      quizzesCompleted: 8, 
-      accuracy: 92, 
+      department: "Your Department", 
+      points: 0, 
+      quizzesCompleted: 0, 
+      accuracy: 0, 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=current",
       isCurrentUser: true 
-    },
-    { 
-      id: 4, 
-      name: "Emily Rodriguez", 
-      department: "HR", 
-      points: 1180, 
-      quizzesCompleted: 9, 
-      accuracy: 87, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
-      isCurrentUser: false 
-    },
-    { 
-      id: 5, 
-      name: "David Park", 
-      department: "Engineering", 
-      points: 1050, 
-      quizzesCompleted: 7, 
-      accuracy: 91, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=david",
-      isCurrentUser: false 
-    },
-    { 
-      id: 6, 
-      name: "Lisa Thompson", 
-      department: "Finance", 
-      points: 980, 
-      quizzesCompleted: 6, 
-      accuracy: 88, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=lisa",
-      isCurrentUser: false 
-    },
-    { 
-      id: 7, 
-      name: "James Wilson", 
-      department: "Operations", 
-      points: 920, 
-      quizzesCompleted: 5, 
-      accuracy: 85, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=james",
-      isCurrentUser: false 
-    },
-    { 
-      id: 8, 
-      name: "Anna Martinez", 
-      department: "Design", 
-      points: 850, 
-      quizzesCompleted: 4, 
-      accuracy: 90, 
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=anna",
-      isCurrentUser: false 
     }
   ];
 
@@ -182,7 +112,7 @@ const Leaderboard = ({ currentUser }: LeaderboardProps) => {
         
         <div className="mt-4 p-3 bg-muted/30 rounded-lg">
           <p className="text-sm text-center text-muted-foreground">
-            Complete more quizzes to climb the leaderboard! 🚀
+            No quiz data available yet. Start taking quizzes to see your progress! 🚀
           </p>
         </div>
       </CardContent>

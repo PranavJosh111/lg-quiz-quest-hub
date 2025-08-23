@@ -33,31 +33,26 @@ interface EmployeeDashboardProps {
 const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
   const [selectedAvatar, setSelectedAvatar] = useState(1);
 
-  // Mock data - will be replaced with real data from Supabase
+  // Real user stats - will be populated from database
   const userStats = {
-    totalPoints: 1250,
-    weeklyRank: 3,
-    completedQuizzes: 8,
-    totalQuizzes: 12,
-    streak: 5,
-    nextQuizUnlockIn: "1 day, 14 hours"
+    totalPoints: 0,
+    weeklyRank: 0,
+    completedQuizzes: 0,
+    totalQuizzes: 0,
+    streak: 0,
+    nextQuizUnlockIn: "No quizzes available"
   };
 
   const badges = [
-    { id: 1, name: "First Quiz", icon: Target, earned: true, description: "Complete your first quiz" },
-    { id: 2, name: "Weekly Warrior", icon: Calendar, earned: true, description: "Complete 5 weekly quizzes" },
-    { id: 3, name: "Perfect Score", icon: Star, earned: true, description: "Score 100% on a quiz" },
+    { id: 1, name: "First Quiz", icon: Target, earned: false, description: "Complete your first quiz" },
+    { id: 2, name: "Weekly Warrior", icon: Calendar, earned: false, description: "Complete 5 weekly quizzes" },
+    { id: 3, name: "Perfect Score", icon: Star, earned: false, description: "Score 100% on a quiz" },
     { id: 4, name: "Streak Master", icon: Zap, earned: false, description: "Maintain a 7-day streak" },
     { id: 5, name: "Quiz Champion", icon: Trophy, earned: false, description: "Complete all available quizzes" }
   ];
 
   const weeklyQuizzes = [
-    { week: 1, title: "LG History & Values", status: "completed", score: 95, unlocked: true },
-    { week: 2, title: "Product Knowledge Basics", status: "completed", score: 88, unlocked: true },
-    { week: 3, title: "Customer Service Excellence", status: "completed", score: 100, unlocked: true },
-    { week: 4, title: "Technical Fundamentals", status: "available", score: null, unlocked: true },
-    { week: 5, title: "Innovation & Technology", status: "locked", score: null, unlocked: false },
-    { week: 6, title: "Leadership Skills", status: "locked", score: null, unlocked: false }
+    { week: 1, title: "No quizzes available", status: "locked", score: null, unlocked: false }
   ];
 
   const avatarOptions = [
