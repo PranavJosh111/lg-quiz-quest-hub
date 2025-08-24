@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,9 +20,11 @@ import {
   Calendar,
   Clock,
   Building2,
-  AlertTriangle
+  AlertTriangle,
+  PieChart
 } from "lucide-react";
 import DepartmentReports from "./DepartmentReports";
+import PerformanceAnalytics from "./PerformanceAnalytics";
 
 import { AuthUser } from "@/hooks/useAuth";
 
@@ -66,10 +69,14 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Overview
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <PieChart className="w-4 h-4" />
+              Analytics
             </TabsTrigger>
             <TabsTrigger value="departments" className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
@@ -192,6 +199,10 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <PerformanceAnalytics />
           </TabsContent>
 
           <TabsContent value="departments" className="space-y-6">
