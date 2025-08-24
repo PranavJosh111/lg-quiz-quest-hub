@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import DepartmentReports from "./DepartmentReports";
 import PerformanceAnalytics from "./PerformanceAnalytics";
+import QuizCreationDialog from "./QuizCreationDialog";
 
 import { AuthUser } from "@/hooks/useAuth";
 
@@ -35,6 +36,7 @@ interface AdminDashboardProps {
 
 const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isQuizDialogOpen, setIsQuizDialogOpen] = useState(false);
 
   // Real admin stats - will be populated from database
   const adminStats = {
@@ -248,7 +250,10 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
           <TabsContent value="quizzes" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Quiz Management</h2>
-              <Button className="bg-gradient-to-r from-primary to-primary-glow">
+              <Button 
+                className="bg-gradient-to-r from-primary to-primary-glow"
+                onClick={() => setIsQuizDialogOpen(true)}
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Create New Quiz
               </Button>
@@ -332,6 +337,12 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Quiz Creation Dialog */}
+      <QuizCreationDialog 
+        isOpen={isQuizDialogOpen} 
+        onOpenChange={setIsQuizDialogOpen}
+      />
     </div>
   );
 };
