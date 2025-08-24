@@ -121,11 +121,11 @@ export const useAuth = () => {
       setProfile(null);
       setSession(null);
       
-      // Force page reload for clean state
+      // Force redirect to login after logout
       window.location.href = '/';
     } catch (err: any) {
       setError(err.message);
-      // Even if there's an error, force refresh to clean state
+      // Even if there's an error, force redirect to login
       window.location.href = '/';
     }
   };

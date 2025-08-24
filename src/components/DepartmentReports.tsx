@@ -14,59 +14,8 @@ import {
 } from "lucide-react";
 
 const DepartmentReports = () => {
-  // Mock department data with realistic metrics
-  const departmentData = [
-    {
-      name: "Engineering",
-      totalEmployees: 35,
-      participationRate: 89,
-      averageScore: 92,
-      completionRate: 85,
-      lowPerformers: 2, // Users with <75% attempt ratio
-      nonParticipants: 4, // Users who haven't attempted current quiz
-      trend: "up"
-    },
-    {
-      name: "Marketing",
-      totalEmployees: 28,
-      participationRate: 75,
-      averageScore: 87,
-      completionRate: 71,
-      lowPerformers: 5,
-      nonParticipants: 7,
-      trend: "down"
-    },
-    {
-      name: "Sales",
-      totalEmployees: 42,
-      participationRate: 81,
-      averageScore: 83,
-      completionRate: 78,
-      lowPerformers: 8,
-      nonParticipants: 8,
-      trend: "up"
-    },
-    {
-      name: "HR",
-      totalEmployees: 15,
-      participationRate: 93,
-      averageScore: 91,
-      completionRate: 87,
-      lowPerformers: 1,
-      nonParticipants: 1,
-      trend: "up"
-    },
-    {
-      name: "Finance",
-      totalEmployees: 22,
-      participationRate: 68,
-      averageScore: 79,
-      completionRate: 64,
-      lowPerformers: 7,
-      nonParticipants: 7,
-      trend: "down"
-    }
-  ];
+  // Initialize with empty department data
+  const departmentData: any[] = [];
 
   const alertRequiredDepartments = departmentData.filter(dept => 
     dept.lowPerformers > 0 || dept.nonParticipants > 5
@@ -121,7 +70,14 @@ const DepartmentReports = () => {
 
       {/* Department Reports Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {departmentData.map((dept) => (
+        {departmentData.length === 0 ? (
+          <div className="col-span-2 text-center py-12">
+            <Building2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">No Department Data</h3>
+            <p className="text-sm text-muted-foreground">Department reports will appear here once quiz data is available.</p>
+          </div>
+        ) : (
+          departmentData.map((dept) => (
           <Card key={dept.name} className="relative">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
@@ -210,7 +166,8 @@ const DepartmentReports = () => {
               </div>
             </CardContent>
           </Card>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Summary Card */}
@@ -221,27 +178,19 @@ const DepartmentReports = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-muted/30 rounded-lg">
-              <div className="text-2xl font-bold text-primary">
-                {departmentData.reduce((sum, dept) => sum + dept.totalEmployees, 0)}
-              </div>
+              <div className="text-2xl font-bold text-primary">0</div>
               <div className="text-sm text-muted-foreground">Total Employees</div>
             </div>
             <div className="text-center p-3 bg-muted/30 rounded-lg">
-              <div className="text-2xl font-bold text-success">
-                {Math.round(departmentData.reduce((sum, dept) => sum + dept.participationRate, 0) / departmentData.length)}%
-              </div>
+              <div className="text-2xl font-bold text-success">0%</div>
               <div className="text-sm text-muted-foreground">Avg Participation</div>
             </div>
             <div className="text-center p-3 bg-muted/30 rounded-lg">
-              <div className="text-2xl font-bold text-warning">
-                {departmentData.reduce((sum, dept) => sum + dept.lowPerformers, 0)}
-              </div>
+              <div className="text-2xl font-bold text-warning">0</div>
               <div className="text-sm text-muted-foreground">Low Performers</div>
             </div>
             <div className="text-center p-3 bg-muted/30 rounded-lg">
-              <div className="text-2xl font-bold text-destructive">
-                {departmentData.reduce((sum, dept) => sum + dept.nonParticipants, 0)}
-              </div>
+              <div className="text-2xl font-bold text-destructive">0</div>
               <div className="text-sm text-muted-foreground">Non-Participants</div>
             </div>
           </div>
