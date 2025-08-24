@@ -103,27 +103,34 @@ export const useAuth = () => {
 
   const signOut = async () => {
     try {
+      console.log('Starting logout process...');
       setError(null);
       
       // Clean up auth state first
+      console.log('Cleaning up auth state...');
       cleanupAuthState();
       
       // Attempt global sign out
       try {
+        console.log('Attempting global signout...');
         await supabase.auth.signOut({ scope: 'global' });
+        console.log('Global signout successful');
       } catch (err) {
         // Continue even if this fails
-        console.warn('Global signout failed, continuing with cleanup');
+        console.warn('Global signout failed, continuing with cleanup', err);
       }
       
       // Clear local state
+      console.log('Clearing local state...');
       setUser(null);
       setProfile(null);
       setSession(null);
       
+      console.log('Logout complete, redirecting...');
       // Force redirect to login after logout
       window.location.href = '/';
     } catch (err: any) {
+      console.error('Logout error:', err);
       setError(err.message);
       // Even if there's an error, force redirect to login
       window.location.href = '/';

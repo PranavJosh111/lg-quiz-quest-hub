@@ -5,7 +5,7 @@ import EmployeeDashboard from "@/components/EmployeeDashboard";
 import AdminDashboard from "@/components/AdminDashboard";
 
 const Index = () => {
-  const { authUser, loading } = useAuth();
+  const { authUser, loading, signOut } = useAuth();
 
   if (loading) {
     return (
@@ -26,7 +26,7 @@ const Index = () => {
   if (authUser.profile.role === 'admin') {
     return (
       <ProtectedRoute requiredRole="admin">
-        <AdminDashboard user={authUser} onLogout={() => window.location.reload()} />
+        <AdminDashboard user={authUser} onLogout={signOut} />
       </ProtectedRoute>
     );
   }
@@ -34,7 +34,7 @@ const Index = () => {
   // Default to user dashboard
   return (
     <ProtectedRoute requiredRole="user">
-      <EmployeeDashboard user={authUser} onLogout={() => window.location.reload()} />
+      <EmployeeDashboard user={authUser} onLogout={signOut} />
     </ProtectedRoute>
   );
 };
