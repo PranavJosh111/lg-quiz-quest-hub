@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Building2, Shield, User, AlertCircle } from "lucide-react";
+import lgLogo from "@/assets/lg-logo.png";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -38,8 +39,8 @@ const LoginPage = ({ onAuthSuccess }: LoginPageProps) => {
          style={{ background: 'var(--gradient-corporate)' }}>
       <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-xl flex items-center justify-center">
-            <Building2 className="w-8 h-8 text-primary-foreground" />
+          <div className="mx-auto w-16 h-16 flex items-center justify-center">
+            <img src={lgLogo} alt="LG Logo" className="w-16 h-16 object-contain" />
           </div>
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
             LG Quiz Platform

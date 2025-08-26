@@ -51,7 +51,7 @@ const AvatarCustomizer = ({ selectedAvatar, onAvatarChange, userName }: AvatarCu
     { name: 'Purple', value: '8b5cf6' },
     { name: 'Green', value: '10b981' },
     { name: 'Pink', value: 'ec4899' },
-    { name: 'Orange', value: 'f97316' }
+    { name: 'Red', value: 'dc2626' }
   ];
 
   const generateAvatarUrl = (index: number, customBg?: string) => {

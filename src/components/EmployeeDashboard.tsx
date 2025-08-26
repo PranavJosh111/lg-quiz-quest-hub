@@ -20,6 +20,7 @@ import {
   User,
   LogOut
 } from "lucide-react";
+import lgLogo from "@/assets/lg-logo.png";
 import AvatarCustomizer from "./AvatarCustomizer";
 import Leaderboard from "./Leaderboard";
 
@@ -68,7 +69,10 @@ const EmployeeDashboard = ({ user, onLogout }: EmployeeDashboardProps) => {
       <header className="bg-card border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold text-primary">LG Quiz Platform</h1>
+            <div className="flex items-center space-x-3">
+              <img src={lgLogo} alt="LG Logo" className="w-8 h-8 object-contain" />
+              <h1 className="text-2xl font-bold text-primary">LG Quiz Platform</h1>
+            </div>
             <div className="flex items-center space-x-4">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={avatarOptions[selectedAvatar - 1]} />
