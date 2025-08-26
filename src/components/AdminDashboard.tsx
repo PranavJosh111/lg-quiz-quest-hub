@@ -23,7 +23,6 @@ import {
   AlertTriangle,
   PieChart
 } from "lucide-react";
-import lgLogo from "@/assets/lg-logo.png";
 import DepartmentReports from "./DepartmentReports";
 import PerformanceAnalytics from "./PerformanceAnalytics";
 import QuizCreationDialog from "./QuizCreationDialog";
@@ -59,7 +58,7 @@ const AdminDashboard = ({ user, onLogout }: AdminDashboardProps) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <img src={lgLogo} alt="LG Logo" className="w-8 h-8 object-contain" />
+              <img src="/lovable-uploads/1c7d3126-d8d3-460d-890d-b1ed95f5eefb.png" alt="LG Logo" className="w-8 h-8 object-contain" />
               <h1 className="text-2xl font-bold text-primary">LG Quiz Platform - Admin</h1>
             </div>
             <div className="flex items-center space-x-4">

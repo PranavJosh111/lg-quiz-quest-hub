@@ -16,10 +16,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 15% 15%;
 
-    /* LG Red Primary */
-    --primary: 0 85% 55%;
+    /* LG Red Primary - matching official logo */
+    --primary: 340 75% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 85% 65%;
+    --primary-glow: 340 75% 65%;
 
     /* Professional Secondary */
     --secondary: 220 13% 95%;
@@ -36,7 +36,7 @@
 
     --border: 220 13% 88%;
     --input: 220 13% 94%;
-    --ring: 0 85% 55%;
+    --ring: 340 75% 55%;
 
     /* Success & Achievement Colors */
     --success: 120 60% 45%;
